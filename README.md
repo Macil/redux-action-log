@@ -8,14 +8,6 @@ action history and access it. It can be configured to have a maximum number of
 actions to keep in the history. Early actions will be removed from the history,
 and the redux state of the beginning of the history will be recorded.
 
-Note that history culling and `store.replaceReducer()` do not work well
-together: redux-action-log does not record the state after each action. It only
-records the state at the start. When actions are removed from the beginning of
-the log, the reducer is run again on the initial state and the action to be
-removed to calculate the new initial state. This means that redux-action-log
-does not have to keep many states in memory at once, but it does require that
-the reducer is deterministic in order to be accurate.
-
 ## Usage
 
 ```js
@@ -24,7 +16,7 @@ import {createActionLog} from 'redux-action-log';
 
 import myReducer from './reducer';
 
-const actionLog = createActionLog({maxActions: 100});
+const actionLog = createActionLog({limit: 100});
 const store = createStore(myReducer, undefined, actionLog.enhancer);
 
 // ...
@@ -51,7 +43,7 @@ import {createActionLog} from 'redux-action-log';
 import myReducer from './reducer';
 import someMiddleware from './someMiddleware';
 
-const actionLog = createActionLog({maxActions: 100});
+const actionLog = createActionLog({limit: 100});
 
 let enhancer = applyMiddleware(someMiddleware);
 enhancer = compose(enhancer, actionLog.enhancer);
@@ -61,16 +53,23 @@ const store = createStore(myReducer, undefined, enhancer);
 
 ## API
 
-This module exports the `createActionLog(options)` function. The `maxActions`
-property may be set to null to mean no limit or to a number to set a limit.
+This module exports the `createActionLog(options)` function. The `options`
+object may have the following properties:
+* `limit`: Soft limit to the number of actions recorded. May be set to null to
+ mean no limit. Defaults to 200.
+* `snapshotInterval`: When this many actions pass, a checkpoint containing a
+ reference to the current state is made. A higher number means fewer
+ checkpoints will be kept in memory, but it means that the log must go on
+ longer before being culled. May be set to null to mean no checkpoints should
+ be made (this is only sensible when no limit is used too). Defaults to 20.
 
 The function returns an object with the following properties:
 * `enhancer`: Pass this to createStore once.
 * `getLog()`: Returns the object `{initialState, skipped, actions}`.
-* `setMaxActions(n)`: Change the maxActions option. This will cull the action
- log if necessary.
-* `clear`: Completely cull the current log. It's equivalent to setting
- maxActions to 0 and then back to the previous value.
+* `setLimit(n)`: Change the limit option. This will cull the action log if
+ necessary.
+* `clear`: Completely cull the current log. It's similar to setting limit to 0
+ and then back to its previous value.
 
 ## Types
 

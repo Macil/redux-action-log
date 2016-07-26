@@ -105,7 +105,7 @@ describe('recordLog', function() {
     });
 
     it('can cull history', function() {
-      const actionLog = createActionLog({maxActions: 3});
+      const actionLog = createActionLog({limit: 3, snapshotInterval: 1});
       const store = createStore(reducer, {counter: 1}, actionLog.enhancer);
 
       assert.deepStrictEqual(store.getState(), {counter: 1});
@@ -196,9 +196,9 @@ describe('recordLog', function() {
     });
   });
 
-  describe('setMaxActions', function() {
+  describe('setLimit', function() {
     it('works', function() {
-      const actionLog = createActionLog({});
+      const actionLog = createActionLog({snapshotInterval: 2});
       const store = createStore(reducer, undefined, actionLog.enhancer);
 
       assert.deepStrictEqual(store.getState(), {counter: 0});
@@ -222,7 +222,7 @@ describe('recordLog', function() {
         }
       );
 
-      actionLog.setMaxActions(1);
+      actionLog.setLimit(1);
 
       assert.deepStrictEqual(
         actionLog.getLog(),
@@ -241,15 +241,14 @@ describe('recordLog', function() {
       assert.deepStrictEqual(
         actionLog.getLog(),
         {
-          initialState: {counter: 14},
-          skipped: 3,
+          initialState: {counter: 8},
+          skipped: 2,
           actions: [
+            {type: 'ADD', payload: 6},
             {type: 'ADD', payload: 7}
           ]
         }
       );
-
-      actionLog.setMaxActions(null);
 
       store.dispatch({type: 'ADD', payload: 8});
       assert.deepStrictEqual(store.getState(), {counter: 29});
@@ -257,11 +256,30 @@ describe('recordLog', function() {
       assert.deepStrictEqual(
         actionLog.getLog(),
         {
-          initialState: {counter: 14},
-          skipped: 3,
+          initialState: {counter: 21},
+          skipped: 4,
           actions: [
-            {type: 'ADD', payload: 7},
             {type: 'ADD', payload: 8}
+          ]
+        }
+      );
+
+      actionLog.setLimit(null);
+
+      store.dispatch({type: 'ADD', payload: 9});
+      assert.deepStrictEqual(store.getState(), {counter: 38});
+      store.dispatch({type: 'ADD', payload: 10});
+      assert.deepStrictEqual(store.getState(), {counter: 48});
+
+      assert.deepStrictEqual(
+        actionLog.getLog(),
+        {
+          initialState: {counter: 21},
+          skipped: 4,
+          actions: [
+            {type: 'ADD', payload: 8},
+            {type: 'ADD', payload: 9},
+            {type: 'ADD', payload: 10}
           ]
         }
       );

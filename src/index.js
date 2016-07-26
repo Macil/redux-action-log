@@ -1,7 +1,8 @@
 /* @flow */
 
 export type RecordLogOptions = {
-  maxActions?: ?number;
+  limit?: ?number;
+  snapshotInterval?: ?number;
 };
 
 export type Log = {
@@ -10,38 +11,55 @@ export type Log = {
   actions: Array<any>;
 };
 
+type Chunk = {
+  state: any;
+  actions: any[];
+};
+
 export function createActionLog(options: RecordLogOptions) {
-  let {maxActions} = options;
+  const {snapshotInterval=20} = options;
+  let {limit=200} = options;
 
   let store;
-  let reducer;
-  let initialState;
+  let chunks: Chunk[] = [];
   let skipped = 0;
-  let actions = [];
+
+  function countActionsInChunks() {
+    return (chunks.length-1)*(snapshotInterval||0) +
+      chunks[chunks.length-1].actions.length;
+  }
 
   function cull() {
-    if (maxActions != null && actions.length > maxActions) {
-      const skipping = actions.length-maxActions;
-      const culling = actions.splice(0, skipping);
-      skipped += skipping;
-      initialState = culling.reduce(
-        (state, action) => reducer(state, action),
-        initialState
-      );
+    if (limit == null || snapshotInterval == null) return;
+    const extraActionsCount = countActionsInChunks() - limit;
+    const firstNecessaryChunk = Math.floor(extraActionsCount/snapshotInterval);
+    if (firstNecessaryChunk > 0) {
+      chunks.splice(0, firstNecessaryChunk);
+      skipped += firstNecessaryChunk*snapshotInterval;
     }
   }
 
   const enhancer = function(createStore: Function) {
-    return function(_reducer: Function, _initialState: any, enhancer: Function) {
+    return function(reducer: Function, initialState: any, enhancer: Function) {
       if (store) throw new Error('redux-action-log enhancer can not be re-used');
-      store = createStore(_reducer, _initialState, enhancer);
+      store = createStore(reducer, initialState, enhancer);
       const {dispatch} = store;
-      initialState = _initialState;
-      reducer = _reducer;
+      chunks.push({
+        state: initialState,
+        actions: []
+      });
       return {
         ...store,
         dispatch(action) {
-          actions.push(action);
+          const lastChunk = chunks[chunks.length-1];
+          if (lastChunk.actions.length === snapshotInterval) {
+            chunks.push({
+              state: store.getState(),
+              actions: [action]
+            });
+          } else {
+            lastChunk.actions.push(action);
+          }
           cull();
           return dispatch(action);
         }
@@ -51,17 +69,23 @@ export function createActionLog(options: RecordLogOptions) {
 
   return {
     enhancer,
-    setMaxActions(n: ?number) {
-      maxActions = n;
+    setLimit(n: ?number) {
+      limit = n;
       cull();
     },
     getLog(): Log {
-      return {initialState, skipped, actions: actions.slice()};
+      return {
+        initialState: chunks[0].state,
+        skipped,
+        actions: [].concat(...chunks.map(c => c.actions))
+      };
     },
     clear() {
-      initialState = store.getState();
-      skipped += actions.length;
-      actions.length = 0;
+      skipped += countActionsInChunks();
+      chunks = [{
+        state: store.getState(),
+        actions: []
+      }];
     }
   };
 }
