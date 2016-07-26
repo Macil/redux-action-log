@@ -71,5 +71,5 @@ The function returns an object with the following properties:
 
 ## Types
 
-[Flow Type](http://flowtype.org/) declarations for this module are included!
+[Flow Type](https://flowtype.org/) declarations for this module are included!
 If you are using Flow, they won't require any configuration to use.
