@@ -8,12 +8,17 @@ export type RecordLogOptions = {
 export type Log = {
   initialState: any;
   skipped: number;
-  actions: Array<any>;
+  actions: Array<ActionEntry>;
+};
+
+export type ActionEntry = {
+  action: any;
+  timestamp: number;
 };
 
 type Chunk = {
   state: any;
-  actions: any[];
+  actions: Array<ActionEntry>;
 };
 
 export function createActionLog(options: RecordLogOptions) {
@@ -52,13 +57,14 @@ export function createActionLog(options: RecordLogOptions) {
         ...store,
         dispatch(action) {
           const lastChunk = chunks[chunks.length-1];
+          const actionEntry = {action, timestamp: Date.now()};
           if (lastChunk.actions.length === snapshotInterval) {
             chunks.push({
               state: store.getState(),
-              actions: [action]
+              actions: [actionEntry]
             });
           } else {
-            lastChunk.actions.push(action);
+            lastChunk.actions.push(actionEntry);
           }
           cull();
           return dispatch(action);

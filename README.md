@@ -26,8 +26,8 @@ const log = actionLog.getLog();
 //   initialState: undefined,
 //   skipped: 0,
 //   actions: [
-//     {type: 'ADD', payload: 3},
-//     {type: 'ADD', payload: 5}
+//     {action: {type: 'ADD', payload: 3}, timestamp: 1469604366218},
+//     {action: {type: 'ADD', payload: 5}, timestamp: 1469604424293}
 //   ]
 // }
 ```

@@ -1,6 +1,7 @@
 /* @flow */
 
 import assert from 'assert';
+import sinon from 'sinon';
 import {compose, createStore, applyMiddleware} from 'redux';
 
 import {createActionLog} from '../src';
@@ -13,6 +14,13 @@ function reducer(state={counter: 0}, action) {
 }
 
 describe('recordLog', function() {
+  before(function() {
+    sinon.stub(Date, 'now', () => 1413521629434);
+  });
+  after(function() {
+    Date.now.reset();
+  });
+
   it('reusing enhancer fails', function() {
     const actionLog = createActionLog({});
     createStore(reducer, undefined, actionLog.enhancer);
@@ -48,10 +56,10 @@ describe('recordLog', function() {
         initialState: undefined,
         skipped: 0,
         actions: [
-          {type: 'ADD', payload: 3},
-          {type: 'ADD', payload: 30},
-          {type: 'ADD', payload: 5},
-          {type: 'ADD', payload: 50}
+          {action: {type: 'ADD', payload: 3}, timestamp: 1413521629434},
+          {action: {type: 'ADD', payload: 30}, timestamp: 1413521629434},
+          {action: {type: 'ADD', payload: 5}, timestamp: 1413521629434},
+          {action: {type: 'ADD', payload: 50}, timestamp: 1413521629434}
         ]
       }
     );
@@ -74,8 +82,8 @@ describe('recordLog', function() {
           initialState: undefined,
           skipped: 0,
           actions: [
-            {type: 'ADD', payload: 3},
-            {type: 'ADD', payload: 5}
+            {action: {type: 'ADD', payload: 3}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 5}, timestamp: 1413521629434}
           ]
         }
       );
@@ -97,8 +105,8 @@ describe('recordLog', function() {
           initialState: {counter: 1},
           skipped: 0,
           actions: [
-            {type: 'ADD', payload: 3},
-            {type: 'ADD', payload: 5}
+            {action: {type: 'ADD', payload: 3}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 5}, timestamp: 1413521629434}
           ]
         }
       );
@@ -126,9 +134,9 @@ describe('recordLog', function() {
           initialState: {counter: 9},
           skipped: 2,
           actions: [
-            {type: 'ADD', payload: 7},
-            {type: 'ADD', payload: 9},
-            {type: 'ADD', payload: 13}
+            {action: {type: 'ADD', payload: 7}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 9}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 13}, timestamp: 1413521629434}
           ]
         }
       );
@@ -152,8 +160,8 @@ describe('recordLog', function() {
           initialState: undefined,
           skipped: 0,
           actions: [
-            {type: 'ADD', payload: 3},
-            {type: 'ADD', payload: 5}
+            {action: {type: 'ADD', payload: 3}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 5}, timestamp: 1413521629434}
           ]
         }
       );
@@ -178,7 +186,7 @@ describe('recordLog', function() {
           initialState: {counter: 8},
           skipped: 2,
           actions: [
-            {type: 'ADD', payload: 7}
+            {action: {type: 'ADD', payload: 7}, timestamp: 1413521629434}
           ]
         }
       );
@@ -215,9 +223,9 @@ describe('recordLog', function() {
           initialState: undefined,
           skipped: 0,
           actions: [
-            {type: 'ADD', payload: 3},
-            {type: 'ADD', payload: 5},
-            {type: 'ADD', payload: 6}
+            {action: {type: 'ADD', payload: 3}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 5}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 6}, timestamp: 1413521629434}
           ]
         }
       );
@@ -230,7 +238,7 @@ describe('recordLog', function() {
           initialState: {counter: 8},
           skipped: 2,
           actions: [
-            {type: 'ADD', payload: 6}
+            {action: {type: 'ADD', payload: 6}, timestamp: 1413521629434}
           ]
         }
       );
@@ -244,8 +252,8 @@ describe('recordLog', function() {
           initialState: {counter: 8},
           skipped: 2,
           actions: [
-            {type: 'ADD', payload: 6},
-            {type: 'ADD', payload: 7}
+            {action: {type: 'ADD', payload: 6}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 7}, timestamp: 1413521629434}
           ]
         }
       );
@@ -259,7 +267,7 @@ describe('recordLog', function() {
           initialState: {counter: 21},
           skipped: 4,
           actions: [
-            {type: 'ADD', payload: 8}
+            {action: {type: 'ADD', payload: 8}, timestamp: 1413521629434}
           ]
         }
       );
@@ -277,9 +285,9 @@ describe('recordLog', function() {
           initialState: {counter: 21},
           skipped: 4,
           actions: [
-            {type: 'ADD', payload: 8},
-            {type: 'ADD', payload: 9},
-            {type: 'ADD', payload: 10}
+            {action: {type: 'ADD', payload: 8}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 9}, timestamp: 1413521629434},
+            {action: {type: 'ADD', payload: 10}, timestamp: 1413521629434}
           ]
         }
       );
