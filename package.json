@@ -5,7 +5,8 @@
   "main": "js/index.js",
   "scripts": {
     "prepublish": "babel -s inline -d js/ src/ && flow-copy-source -v src js",
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && npm run flow_check && mocha",
+    "flow_check": "flow check",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
@@ -36,8 +37,9 @@
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.11.5",
     "eslint": "^3.1.1",
+    "flow-bin": "^0.30.0",
     "flow-copy-source": "^1.0.2",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.1",
     "redux": "^3.5.2",
     "sinon": "^1.17.5"
   },
