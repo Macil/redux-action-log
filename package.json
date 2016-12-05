@@ -4,7 +4,7 @@
   "description": "Redux store enhancer for recording action history.",
   "main": "js/index.js",
   "scripts": {
-    "prepublish": "babel -s inline -d js/ src/ && flow-copy-source -v src js",
+    "prepare": "babel -s inline -d js/ src/ && flow-copy-source -v src js",
     "test": "npm run lint && npm run flow_check && mocha",
     "flow_check": "flow check",
     "lint": "eslint .",
