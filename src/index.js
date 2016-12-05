@@ -45,7 +45,7 @@ export function createActionLog(options: RecordLogOptions) {
   }
 
   const enhancer = function(createStore: Function) {
-    return function(reducer: Function, initialState: any, enhancer: Function) {
+    return function(reducer: Function, initialState: any, enhancer?: Function) {
       if (store) throw new Error('redux-action-log enhancer can not be re-used');
       store = createStore(reducer, initialState, enhancer);
       const {dispatch} = store;
