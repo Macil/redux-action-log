@@ -15,7 +15,7 @@ function reducer(state={counter: 0}, action) {
 
 describe('recordLog', function() {
   before(function() {
-    sinon.stub(Date, 'now', () => 1413521629434);
+    sinon.stub(Date, 'now').callsFake(() => 1413521629434);
   });
   after(function() {
     Date.now.reset();
