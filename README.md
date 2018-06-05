@@ -1,7 +1,6 @@
 # redux-action-log
 
-[![Circle CI](https://circleci.com/gh/AgentME/redux-action-log.svg?style=shield)](https://circleci.com/gh/AgentME/redux-action-log)
-[![npm version](https://badge.fury.io/js/redux-action-log.svg)](https://badge.fury.io/js/redux-action-log)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AgentME/redux-action-log/blob/master/LICENSE.txt) [![npm version](https://img.shields.io/npm/v/redux-action-log.svg?style=flat)](https://www.npmjs.com/package/redux-action-log) [![CircleCI Status](https://circleci.com/gh/AgentME/redux-action-log.svg?style=shield)](https://circleci.com/gh/AgentME/redux-action-log)
 
 This project is a redux store enhancer which allows you to record the redux
 action history and access it. It can be configured to have a maximum number of
