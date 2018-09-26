@@ -5,3 +5,6 @@ npm-debug.log
 /src
 /test
 /yarn.lock
+/flow-libs
+/.circleci
+.babelrc
