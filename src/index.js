@@ -16,12 +16,19 @@ export type ActionEntry = {
   timestamp: number;
 };
 
+export type ActionLog = {
+  enhancer: Function;
+  setLimit(n: ?number): void;
+  getLog(): Log;
+  clear(): void;
+};
+
 type Chunk = {
   state: any;
   actions: Array<ActionEntry>;
 };
 
-export function createActionLog(options: RecordLogOptions) {
+export function createActionLog(options: RecordLogOptions): ActionLog {
   const {snapshotInterval=20} = options;
   let {limit=200} = options;
 
