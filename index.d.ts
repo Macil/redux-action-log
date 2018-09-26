@@ -5,13 +5,13 @@ export interface RecordLogOptions {
   snapshotInterval?: number | null;
 }
 
-export interface Log<S, A extends Action> {
+export interface Log<S = any, A extends Action = AnyAction> {
   initialState: S;
   skipped: number;
   actions: Array<ActionEntry<A>>;
 }
 
-export interface ActionEntry<A extends Action> {
+export interface ActionEntry<A extends Action = AnyAction> {
   action: A;
   timestamp: number;
 }
