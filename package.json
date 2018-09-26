@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "description": "Redux store enhancer for recording action history.",
   "main": "js/index.js",
+  "sideEffects": false,
   "scripts": {
     "prepare": "babel -s inline -d js/ src/ && flow-copy-source -v src js",
     "test": "yarn run lint && flow check && mocha",
