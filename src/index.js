@@ -18,7 +18,7 @@ export type ActionEntry = {
 
 export type ActionLog = {
   enhancer: Function;
-  setLimit(n: ?number): void;
+  setLimit(n: number | null): void;
   getLog(): Log;
   clear(): void;
 };
@@ -82,7 +82,7 @@ export function createActionLog(options: RecordLogOptions): ActionLog {
 
   return {
     enhancer,
-    setLimit(n: ?number) {
+    setLimit(n: number | null) {
       limit = n;
       cull();
     },
