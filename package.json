@@ -1,6 +1,6 @@
 {
   "name": "redux-action-log",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Redux store enhancer for recording action history.",
   "main": "js/index.js",
   "sideEffects": false,
