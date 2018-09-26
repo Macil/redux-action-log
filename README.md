@@ -62,7 +62,7 @@ object may have the following properties:
  longer before being culled. May be set to null to mean no checkpoints should
  be made (this is only sensible when no limit is used too). Defaults to 20.
 
-The function returns an object with the following properties:
+The function returns an ActionLog object with the following properties:
 * `enhancer`: Pass this to createStore once.
 * `getLog()`: Returns the object `{initialState, skipped, actions}`.
 * `setLimit(n)`: Change the limit option. This will cull the action log if
