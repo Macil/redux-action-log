@@ -1,6 +1,6 @@
 # redux-action-log
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AgentME/redux-action-log/blob/master/LICENSE.txt) [![npm version](https://img.shields.io/npm/v/redux-action-log.svg?style=flat)](https://www.npmjs.com/package/redux-action-log) [![CircleCI Status](https://circleci.com/gh/AgentME/redux-action-log.svg?style=shield)](https://circleci.com/gh/AgentME/redux-action-log) [![Greenkeeper badge](https://badges.greenkeeper.io/AgentME/redux-action-log.svg)](https://greenkeeper.io/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Macil/redux-action-log/blob/master/LICENSE.txt) [![npm version](https://img.shields.io/npm/v/redux-action-log.svg?style=flat)](https://www.npmjs.com/package/redux-action-log) [![CircleCI Status](https://circleci.com/gh/Macil/redux-action-log.svg?style=shield)](https://circleci.com/gh/Macil/redux-action-log) [![Greenkeeper badge](https://badges.greenkeeper.io/Macil/redux-action-log.svg)](https://greenkeeper.io/)
 
 This project is a redux store enhancer which allows you to record the redux
 action history and access it. It can be configured to have a maximum number of
