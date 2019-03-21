@@ -44,7 +44,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.4.2",
     "redux": "^4.0.0"
   },
   "greenkeeper": {
